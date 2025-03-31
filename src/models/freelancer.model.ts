@@ -1,7 +1,7 @@
 import { IJob } from '@/types/job.type'
 import mongoose, { Document, Schema } from 'mongoose'
 
-export interface IFreelancer extends Document {
+export interface FreelancerType {
 	email: string
 	job_preferences: string
 	profile_description: string
@@ -9,6 +9,8 @@ export interface IFreelancer extends Document {
 	username: string
 	preferred_locations: Record<string, string>
 }
+
+export interface IFreelancer extends Document, FreelancerType {}
 
 const freelancerSchema = new Schema<IFreelancer>({
 	email: { type: String, required: true },

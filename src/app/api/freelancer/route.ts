@@ -1,5 +1,9 @@
 import connectDb from '@/lib/db'
-import Freelancer, { IFreelancer } from '@/models/freelancer.model'
+import Freelancer, {
+	FreelancerType,
+	IFreelancer,
+} from '@/models/freelancer.model'
+import mongoose from 'mongoose'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest) {
@@ -24,4 +28,26 @@ export async function PUT(req: NextRequest) {
 		console.log(e)
 	}
 	return NextResponse.json({ message: 'Error' }, { status: 500 })
+}
+
+export async function DELETE(req: NextRequest) {
+	const data = await req.json()
+	console.log(data)
+	return NextResponse.json([])
+}
+
+export async function POST(req: NextRequest) {
+	const { data: freelancer }: { data: FreelancerType } = await req.json()
+	try {
+		await connectDb()
+		const newFreelancer = await Freelancer.create(freelancer)
+
+		return NextResponse.json({ newFreelancer }, { status: 201 })
+	} catch (e) {
+		if (e instanceof mongoose.Error.ValidationError) {
+			return NextResponse.json({ error: 'Validation error' }, { status: 400 })
+		}
+		console.log(e)
+	}
+	return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
 }

@@ -16,7 +16,7 @@ const FreelancerPage = () => {
 	return (
 		<>
 			{freelancer && (
-				<div className='container mx-auto'>
+				<>
 					<IconButton onClick={() => router.push(`/agency/${params.agencyId}`)}>
 						<ArrowBackIos />
 					</IconButton>
@@ -35,7 +35,7 @@ const FreelancerPage = () => {
 							updateFreelancer={() => updateFreelancer(freelancer)}
 						/>
 					</div>
-				</div>
+				</>
 			)}
 		</>
 	)

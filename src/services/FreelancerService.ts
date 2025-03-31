@@ -1,16 +1,16 @@
+import { AgencyFreelancer } from '@/lib/agency'
 import connectDb from '@/lib/db'
-import { IFreelancer } from '@/models/freelancer.model'
+import { FreelancerType, IFreelancer } from '@/models/freelancer.model'
 import { IJob } from '@/types/job.type'
 import axios from 'axios'
-import { Document } from 'mongoose'
 
 class FreelancerService {
-	async getMineJobs(freelancerId: string) {
+	async getFreelancersJobs(freelancers: AgencyFreelancer[]) {
 		try {
-			const response = await axios.post<Array<Omit<IJob, keyof Document>>>(
+			const response = await axios.post<Record<string, IJob[]>>(
 				'/api/freelancer/jobs',
 				{
-					freelancerId,
+					freelancers,
 				}
 			)
 			return response.data
@@ -19,6 +19,7 @@ class FreelancerService {
 			throw e
 		}
 	}
+
 	async getMine(freelancerId: string) {
 		try {
 			await connectDb()
@@ -38,6 +39,23 @@ class FreelancerService {
 				...data,
 			})
 			return response.data
+		} catch (e) {
+			console.log(e)
+		}
+	}
+
+	async create(data: FreelancerType, agencyId: string) {
+		await axios.post('/api/freelancer', { data, agencyId })
+	}
+	async delete(freelancer: string, agencyId: string) {
+		try {
+			await axios.delete('/api/freelancer', {
+				data: {
+					freelancer,
+					agencyId,
+				},
+			})
+			return { status: true }
 		} catch (e) {
 			console.log(e)
 		}

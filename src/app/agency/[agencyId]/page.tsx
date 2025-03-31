@@ -1,5 +1,3 @@
-'use client'
-
 import AgencyFreelancer from '@/components/Agency/AgencyFreelancer'
 import { agency } from '@/lib/agency'
 import {
@@ -10,13 +8,11 @@ import {
 	TableHead,
 	TableRow,
 } from '@mui/material'
-import { useState } from 'react'
-const TABLE_HEADS = ['Username', 'Jobs', 'Matched', 'Unmatched', 'enabled']
+const TABLE_HEADS = ['Username', 'Jobs', 'Matched', 'Unmatched', 'enabled', '']
 
 const AgencyPage = () => {
 	const freeLancers = agency.freelancers
 
-	const [isLoading, setIsLoading] = useState(true)
 	return (
 		<div className='container mx-auto'>
 			<Paper className='p-4'>
@@ -29,25 +25,7 @@ const AgencyPage = () => {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{isLoading && (
-							<TableRow>
-								<TableCell colSpan={TABLE_HEADS.length}>
-									<>Loading...</>
-								</TableCell>
-							</TableRow>
-						)}
-						{freeLancers.map((freelancer, i) => (
-							<AgencyFreelancer
-								dataLoaded={isLoading}
-								key={freelancer.id}
-								endLoading={
-									i === freeLancers.length - 1
-										? () => setIsLoading(false)
-										: undefined
-								}
-								freelancer={freelancer}
-							/>
-						))}
+						<AgencyFreelancer freelancers={freeLancers} />
 					</TableBody>
 				</Table>
 			</Paper>

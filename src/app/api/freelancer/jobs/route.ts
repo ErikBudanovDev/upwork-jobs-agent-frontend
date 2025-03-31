@@ -1,20 +1,18 @@
+import { AgencyFreelancer } from '@/lib/agency'
 import connectDb from '@/lib/db'
-import Freelancer from '@/models/freelancer.model'
 import Job from '@/models/job.model'
-import mongoose from 'mongoose'
 import { NextResponse } from 'next/server'
 
 export async function POST(req: Request) {
 	try {
-		const { freelancerId } = (await req.json()) as { freelancerId: string }
+		const { freelancers }: { freelancers: AgencyFreelancer[] } =
+			await req.json()
 		await connectDb()
-		if (!mongoose.Types.ObjectId.isValid(freelancerId)) {
-			return NextResponse.json([])
+		const jobs: Record<string, object[]> = {}
+		for (const freelancer of freelancers) {
+			const job = await Job.find({ freelancer_id: freelancer.id })
+			if(job)jobs[freelancer.id] = job
 		}
-		if (!(await Freelancer.findById(freelancerId))) return NextResponse.json([])
-		const jobs = await Job.find({
-			freelancer_id: freelancerId,
-		})
 		return NextResponse.json(jobs)
 	} catch (e) {
 		console.log(e)

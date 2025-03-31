@@ -1,52 +1,56 @@
 'use client'
 
 import { useGetFreelancerJobs } from '@/hooks/queries/useGetFreelancerJobs'
+import { useRemoveFreelancer } from '@/hooks/useRemoveFreelancer'
 import { type AgencyFreelancer } from '@/lib/agency'
-import { Switch, TableCell, TableRow } from '@mui/material'
-import { useParams, useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import { DeleteForever } from '@mui/icons-material'
+import { IconButton, Switch, TableCell, TableRow } from '@mui/material'
 const AgencyFreelancer = ({
-	freelancer,
-	endLoading,
-	dataLoaded,
+	freelancers,
 }: {
-	freelancer: AgencyFreelancer
-	endLoading?: () => void
-	dataLoaded: boolean
+	freelancers: AgencyFreelancer[]
 }) => {
-	const params = useParams<{ agencyId: string }>()
-	const { jobs, isLoading } = useGetFreelancerJobs(freelancer.id)
-	const router = useRouter()
-	useEffect(() => {
-		if (!isLoading && endLoading) endLoading()
-	}, [isLoading, endLoading])
-	const handleRowClick = (e: React.MouseEvent<HTMLTableRowElement>) => {
-		if (e.target instanceof HTMLElement && e.target.closest('[data-switcher]'))
-			return
-		router.push(`/agency/${params.agencyId}/freelancer/${freelancer.id}`)
+	const { jobs, isLoading } = useGetFreelancerJobs(freelancers)
+	const { removeFreelancer } = useRemoveFreelancer()
+	const handleDelete = (freelancerId: string) => {
+		removeFreelancer(freelancerId)
 	}
+	if (isLoading)
+		return (
+			<TableRow>
+				<TableCell>...Loading</TableCell>
+			</TableRow>
+		)
 	return (
 		jobs &&
-		!dataLoaded && (
-			<TableRow
-				component='tr'
-				onClick={handleRowClick}
-				hover
-				key={freelancer.id}
-			>
-				<TableCell>{freelancer.username}</TableCell>
-				<TableCell>{jobs.length}</TableCell>
-				<TableCell>
-					{jobs.filter(item => item.status === 'TRUE').length}
-				</TableCell>
-				<TableCell>
-					{jobs.filter(item => item.status === 'FALSE').length}
-				</TableCell>
-
-				<TableCell data-switcher>
-					<Switch defaultChecked></Switch>
-				</TableCell>
-			</TableRow>
+		Boolean(Object.values(jobs).length) &&
+		freelancers.map(
+			freelancer =>
+				jobs[freelancer.id] && (
+					<TableRow hover className='cursor-pointer' key={freelancer.id}>
+						<TableCell>{freelancer.username}</TableCell>
+						<TableCell>{jobs[freelancer.id].length}</TableCell>
+						<TableCell>
+							{jobs[freelancer.id].filter(job => job.status === 'TRUE').length}
+						</TableCell>
+						<TableCell>
+							{jobs[freelancer.id].filter(job => job.status === 'FALSE').length}
+						</TableCell>
+						<TableCell>
+							<Switch checked />
+						</TableCell>
+						<TableCell>
+							<IconButton
+								onClick={() => {
+									if (confirm(`Delete freelancer ${freelancer.username} ?`))
+										handleDelete(freelancer.id)
+								}}
+							>
+								<DeleteForever />
+							</IconButton>
+						</TableCell>
+					</TableRow>
+				)
 		)
 	)
 }
