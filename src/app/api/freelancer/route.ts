@@ -10,8 +10,13 @@ export async function GET(req: NextRequest) {
 	try {
 		const freelancerId = req.nextUrl.searchParams.get('freelancerId')
 		await connectDb()
-		const response = await Freelancer.findById(freelancerId)
-		return NextResponse.json(response)
+
+		if (freelancerId) {
+			const response = await Freelancer.findById(freelancerId)
+			return NextResponse.json(response)
+		}
+
+		return NextResponse.json(await Freelancer.find())
 	} catch (e) {
 		console.log(e)
 	}
@@ -21,8 +26,10 @@ export async function GET(req: NextRequest) {
 export async function PUT(req: NextRequest) {
 	try {
 		const data: IFreelancer = await req.json()
-		const updatedFreelancer = await Freelancer.findByIdAndUpdate(data._id, data)
-
+		const updatedFreelancer = await Freelancer.findByIdAndUpdate(
+			new mongoose.Types.ObjectId(data._id),
+			data
+		)
 		return NextResponse.json(updatedFreelancer)
 	} catch (e) {
 		console.log(e)
@@ -31,9 +38,10 @@ export async function PUT(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-	const data = await req.json()
-	console.log(data)
-	return NextResponse.json([])
+	const { freelancer } = await req.json()
+	console.log(freelancer)
+	const response = await Freelancer.findByIdAndDelete(freelancer)
+	return NextResponse.json(response)
 }
 
 export async function POST(req: NextRequest) {

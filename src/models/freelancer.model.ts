@@ -1,4 +1,3 @@
-import { IJob } from '@/types/job.type'
 import mongoose, { Document, Schema } from 'mongoose'
 
 export interface FreelancerType {
@@ -28,7 +27,7 @@ const freelancerSchema = new Schema<IFreelancer>({
 		required: true,
 	},
 })
-const Freelancer: mongoose.Model<IJob> =
+const Freelancer: mongoose.Model<IFreelancer> =
 	mongoose.models.freelancers ||
 	mongoose.model<IFreelancer>('freelancers', freelancerSchema)
 

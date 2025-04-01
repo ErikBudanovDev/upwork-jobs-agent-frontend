@@ -1,5 +1,6 @@
+'use client'
 import AgencyFreelancer from '@/components/Agency/AgencyFreelancer'
-import { agency } from '@/lib/agency'
+import { useGetAgencyFreelancers } from '@/hooks/useGetAgencyFreelancers'
 import {
 	Paper,
 	Table,
@@ -11,7 +12,7 @@ import {
 const TABLE_HEADS = ['Username', 'Jobs', 'Matched', 'Unmatched', 'enabled', '']
 
 const AgencyPage = () => {
-	const freeLancers = agency.freelancers
+	const { freelancers } = useGetAgencyFreelancers()
 
 	return (
 		<div className='container mx-auto'>
@@ -25,7 +26,7 @@ const AgencyPage = () => {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						<AgencyFreelancer freelancers={freeLancers} />
+						{freelancers && <AgencyFreelancer freelancers={freelancers} />}
 					</TableBody>
 				</Table>
 			</Paper>

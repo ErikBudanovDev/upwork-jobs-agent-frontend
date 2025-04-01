@@ -2,19 +2,20 @@
 
 import { useGetFreelancerJobs } from '@/hooks/queries/useGetFreelancerJobs'
 import { useRemoveFreelancer } from '@/hooks/useRemoveFreelancer'
-import { type AgencyFreelancer } from '@/lib/agency'
+import { agency, type AgencyFreelancer } from '@/lib/agency'
+import { IFreelancer } from '@/models/freelancer.model'
 import { DeleteForever } from '@mui/icons-material'
 import { IconButton, Switch, TableCell, TableRow } from '@mui/material'
-const AgencyFreelancer = ({
-	freelancers,
-}: {
-	freelancers: AgencyFreelancer[]
-}) => {
+import { useRouter } from 'next/navigation'
+import { MouseEvent } from 'react'
+const AgencyFreelancer = ({ freelancers }: { freelancers: IFreelancer[] }) => {
 	const { jobs, isLoading } = useGetFreelancerJobs(freelancers)
 	const { removeFreelancer } = useRemoveFreelancer()
+	const { push } = useRouter()
 	const handleDelete = (freelancerId: string) => {
 		removeFreelancer(freelancerId)
 	}
+
 	if (isLoading)
 		return (
 			<TableRow>
@@ -26,24 +27,44 @@ const AgencyFreelancer = ({
 		Boolean(Object.values(jobs).length) &&
 		freelancers.map(
 			freelancer =>
-				jobs[freelancer.id] && (
-					<TableRow hover className='cursor-pointer' key={freelancer.id}>
+				jobs[freelancer._id as string] && (
+					<TableRow
+						hover
+						onClick={(e: MouseEvent<HTMLElement>) => {
+							if (
+								e.target instanceof HTMLElement &&
+								!e.target.closest('.switcher, .delete')
+							) {
+								push(`/agency/${agency.id}/freelancer/${freelancer._id}`)
+							}
+						}}
+						className='cursor-pointer'
+						key={freelancer._id as string}
+					>
 						<TableCell>{freelancer.username}</TableCell>
-						<TableCell>{jobs[freelancer.id].length}</TableCell>
+						<TableCell>{jobs[freelancer._id as string].length}</TableCell>
 						<TableCell>
-							{jobs[freelancer.id].filter(job => job.status === 'TRUE').length}
+							{
+								jobs[freelancer._id as string].filter(
+									job => job.status === 'TRUE'
+								).length
+							}
 						</TableCell>
 						<TableCell>
-							{jobs[freelancer.id].filter(job => job.status === 'FALSE').length}
+							{
+								jobs[freelancer._id as string].filter(
+									job => job.status === 'FALSE'
+								).length
+							}
 						</TableCell>
-						<TableCell>
-							<Switch checked />
+						<TableCell className='switcher'>
+							<Switch />
 						</TableCell>
-						<TableCell>
+						<TableCell className='delete'>
 							<IconButton
 								onClick={() => {
 									if (confirm(`Delete freelancer ${freelancer.username} ?`))
-										handleDelete(freelancer.id)
+										handleDelete(freelancer._id as string)
 								}}
 							>
 								<DeleteForever />

@@ -4,6 +4,7 @@ import CreateMapField from '@/components/Agency/Freelancer/CreateMapField'
 import { useCreateFreelancer } from '@/hooks/useCreateFreelancer'
 import { Freelancer } from '@/models/freelancer.model'
 import { Button, InputLabel, TextField } from '@mui/material'
+import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 export default function ProfileForm() {
@@ -18,26 +19,32 @@ export default function ProfileForm() {
 	})
 	const [searchCriteries, setSearchCriteries] = useState<string[]>([''])
 	const [preferredLocations, setPreferedLoactions] = useState<string[]>([''])
-
+	const { push } = useRouter()
+	const { agencyId } = useParams<{ agencyId: string }>()
 	useEffect(() => {
 		setFormData(prev => ({
 			...prev,
 			search_criteries: Object.fromEntries(
 				searchCriteries.map((item, index) => [index, item])
 			),
+			preferred_locations: Object.fromEntries(
+				preferredLocations.map((item, index) => [index, item])
+			),
 		}))
 	}, [searchCriteries, preferredLocations])
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		createFreelancer(formData)
-		// setFormData({
-		// 	username: '',
-		// 	email: '',
-		// 	profile_description: '',
-		// 	search_criteries: {},
-		// 	preferred_locations: {},
-		// 	job_preferences: '',
-		// })
+		setFormData({
+			username: '',
+			email: '',
+			profile_description: '',
+			search_criteries: {},
+			preferred_locations: {},
+			job_preferences: '',
+		})
+		setSearchCriteries([''])
+		setPreferedLoactions([''])
 	}
 	const handleChange: (
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

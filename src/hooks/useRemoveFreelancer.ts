@@ -12,7 +12,7 @@ export const useRemoveFreelancer = () => {
 		mutationKey: ['delete freelancer'],
 		onSuccess() {
 			queryClient.invalidateQueries({
-				queryKey: ['get freelancers', agencyId],
+				queryKey: ['get agency freelancers'],
 			})
 		},
 	})

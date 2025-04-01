@@ -1,3 +1,4 @@
+import { IFreelancer } from '@/models/freelancer.model'
 import { Add, Remove } from '@mui/icons-material'
 import { IconButton, Input, Typography } from '@mui/material'
 import { useState } from 'react'
@@ -9,7 +10,7 @@ const EditableMap = ({
 }: {
 	initialMap: Record<string, string>
 	title: string
-	updateFreelancer: () => void
+	updateFreelancer: (updatedData: Partial<IFreelancer>) => void
 }) => {
 	const [map, setMap] = useState(initialMap)
 
@@ -18,15 +19,8 @@ const EditableMap = ({
 			...prev,
 			[key]: value,
 		}))
-		updateFreelancer()
-	}
 
-	const handleAdd = (index: number) => {
-		const arr = Object.values(map)
-		arr.splice(index, 0, '')
-
-		const obj = Object.fromEntries(arr.map((value, idx) => [idx + 1, value]))
-		setMap(obj)
+		updateFreelancer({ search_criteries: map })
 	}
 
 	return (
@@ -34,20 +28,20 @@ const EditableMap = ({
 			<Typography variant='h5' component='h2'>
 				{title}
 			</Typography>
-			<ul className='mt-4'>
+			<ul className='mt-4 flex flex-wrap'>
 				{Object.entries(map).map(([key, value]) => (
-					<li key={key} className='flex items-center gap-x-2'>
+					<li key={key} className='flex items-center gap-x-2 flex-[0_0_25%]'>
 						<span>{key}.</span>
 						<Input
-							disabled={false}
-							value={value} // Заменил defaultValue на value
+							fullWidth
+							value={value}
 							onChange={e => handleChange(key, e.currentTarget.value)}
 							onBlur={e => handleChange(key, e.currentTarget.value)}
 							onKeyDown={e =>
 								e.key === 'Enter' && handleChange(key, e.currentTarget.value)
 							}
 						/>
-						<IconButton onClick={() => handleAdd(+key)}>
+						<IconButton>
 							<Add />
 						</IconButton>
 						<IconButton>

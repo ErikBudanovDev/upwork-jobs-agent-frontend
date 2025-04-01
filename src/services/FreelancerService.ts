@@ -1,11 +1,10 @@
-import { AgencyFreelancer } from '@/lib/agency'
 import connectDb from '@/lib/db'
 import { FreelancerType, IFreelancer } from '@/models/freelancer.model'
 import { IJob } from '@/types/job.type'
 import axios from 'axios'
 
 class FreelancerService {
-	async getFreelancersJobs(freelancers: AgencyFreelancer[]) {
+	async getFreelancersJobs(freelancers: IFreelancer[]) {
 		try {
 			const response = await axios.post<Record<string, IJob[]>>(
 				'/api/freelancer/jobs',
@@ -45,7 +44,7 @@ class FreelancerService {
 	}
 
 	async create(data: FreelancerType, agencyId: string) {
-		await axios.post('/api/freelancer', { data, agencyId })
+		return (await axios.post('/api/freelancer', { data, agencyId })).data
 	}
 	async delete(freelancer: string, agencyId: string) {
 		try {
@@ -59,6 +58,9 @@ class FreelancerService {
 		} catch (e) {
 			console.log(e)
 		}
+	}
+	async getByAgency(agencyId: string) {
+		return (await axios.get<IFreelancer[]>('/api/freelancer')).data
 	}
 }
 

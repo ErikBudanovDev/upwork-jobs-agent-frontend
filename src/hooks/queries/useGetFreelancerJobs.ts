@@ -1,13 +1,11 @@
-import { AgencyFreelancer } from '@/lib/agency'
+import { IFreelancer } from '@/models/freelancer.model'
 import { freelancerService } from '@/services/FreelancerService'
 import { useQuery } from '@tanstack/react-query'
-import { useParams } from 'next/navigation'
 import { useMemo } from 'react'
 
-export const useGetFreelancerJobs = (freelancers: AgencyFreelancer[]) => {
-	const { agencyId } = useParams<{ agencyId: string }>()
+export const useGetFreelancerJobs = (freelancers: IFreelancer[]) => {
 	const { data: jobs, isLoading } = useQuery({
-		queryKey: ['get freelancers jobs', agencyId],
+		queryKey: ['get freelancers jobs'],
 		queryFn: () => freelancerService.getFreelancersJobs(freelancers),
 	})
 
