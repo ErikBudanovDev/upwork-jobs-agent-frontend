@@ -3,9 +3,9 @@ import { freelancerService } from '@/services/FreelancerService'
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 
-export const useGetFreelancerJobs = (freelancers: IFreelancer[]) => {
+export const useGetJobs = (freelancers: IFreelancer[]) => {
 	const { data: jobs, isLoading } = useQuery({
-		queryKey: ['get freelancers jobs'],
+		queryKey: ['get jobs'],
 		queryFn: () => freelancerService.getFreelancersJobs(freelancers),
 	})
 

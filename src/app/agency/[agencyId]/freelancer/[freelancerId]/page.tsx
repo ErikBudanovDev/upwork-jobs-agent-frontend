@@ -56,23 +56,35 @@ const FreelancerPage = () => {
 					<TextField
 						label='Job preferences'
 						multiline
-						value={updatedFreelancer.job_preferences}
+						defaultValue={updatedFreelancer.job_preferences}
+						onBlur={e => {
+							handleFreelancerUpdate({
+								job_preferences: e.currentTarget.value,
+							})
+						}}
 					/>
 					<TextField
 						label='Profile description'
 						multiline
-						value={updatedFreelancer.profile_description}
+						defaultValue={updatedFreelancer.profile_description}
+						onBlur={e => {
+							handleFreelancerUpdate({
+								profile_description: e.target.value,
+							})
+						}}
 					/>
 
 					<EditableMap
 						initialMap={updatedFreelancer.search_criteries}
 						title='Search Criteries'
 						updateFreelancer={handleFreelancerUpdate}
+						keyName='search_criteries'
 					/>
 					<EditableMap
 						initialMap={updatedFreelancer.preferred_locations}
 						title='Preferred Locations'
 						updateFreelancer={handleFreelancerUpdate}
+						keyName='preferred_locations'
 					/>
 				</div>
 			)}

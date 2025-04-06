@@ -7,9 +7,11 @@ import TextField from '@mui/material/TextField'
 const CreateMapField = ({
 	searchCriteries,
 	setObjectValue,
+	error,
 }: {
 	searchCriteries: string[]
 	setObjectValue: (data: string[]) => void
+	error?: boolean
 }) => {
 	const handleAddCriterion = () => {
 		setObjectValue([...searchCriteries, ''])
@@ -32,6 +34,7 @@ const CreateMapField = ({
 						value={criterion}
 						rows={1}
 						className='flex-1'
+						error={error}
 						onChange={e => {
 							setObjectValue(
 								searchCriteries.map((_, i) =>

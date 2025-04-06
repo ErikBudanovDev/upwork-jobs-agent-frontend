@@ -1,5 +1,6 @@
 import { FreelancerType, IFreelancer } from '@/models/freelancer.model'
 import { freelancerService } from '@/services/FreelancerService'
+import { IJob } from '@/types/job.type'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useParams, useRouter } from 'next/navigation'
 import { useMemo } from 'react'
@@ -19,13 +20,30 @@ export const useCreateFreelancer = () => {
 		onSuccess: async (newFreelancer: { newFreelancer: IFreelancer }) => {
 			queryClient.setQueryData(
 				['get agency freelancers'],
-				(oldData: IFreelancer[]) => {
-					console.log(oldData)
-					return [...oldData, newFreelancer.newFreelancer]
+				(oldFreelancers: IFreelancer[]) => {
+					return [...oldFreelancers, newFreelancer.newFreelancer]
 				}
 			)
-			queryClient.refetchQueries(['get freelancers jobs'])
+			queryClient.setQueryData(
+				['get jobs'],
+				(oldData: Record<string, IJob>) => {
+					const newFreelancerId = newFreelancer.newFreelancer.id
+					return {
+						...oldData,
+						[newFreelancerId]: [],
+					}
+				}
+			)
+			queryClient.invalidateQueries({
+				queryKey: ['get agency freelancers'],
+			})
+			queryClient.invalidateQueries({
+				queryKey: ['get jobs'],
+			})
 			router.push(`/agency/${agencyId}`)
+		},
+		onError(error: unknown) {
+			return error
 		},
 	})
 	return useMemo(
