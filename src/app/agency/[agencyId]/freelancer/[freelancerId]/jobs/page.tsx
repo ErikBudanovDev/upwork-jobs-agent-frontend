@@ -13,7 +13,7 @@ const JobsPage = () => {
 				jobs.length > 0 &&
 				jobs.map(job => (
 					<Paper
-						key={job.id}
+						key={`${job._id}`}
 						className='p-4 break-words my-10'
 						style={{ overflowWrap: 'anywhere' }}
 					>

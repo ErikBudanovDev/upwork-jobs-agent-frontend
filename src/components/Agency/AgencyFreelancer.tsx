@@ -26,6 +26,7 @@ const AgencyFreelancer = ({ freelancers }: { freelancers: IFreelancer[] }) => {
 	return (
 		jobs &&
 		Boolean(Object.values(jobs).length) &&
+		freelancers.length > 0 &&
 		freelancers.map(
 			freelancer =>
 				jobs[freelancer._id as string] && (
