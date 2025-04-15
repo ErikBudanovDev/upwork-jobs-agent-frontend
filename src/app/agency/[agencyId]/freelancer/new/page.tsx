@@ -2,14 +2,14 @@
 
 import CreateMapField from '@/components/Agency/Freelancer/CreateMapField'
 import { useCreateFreelancer } from '@/hooks/useCreateFreelancer'
-import { Freelancer, FreelancerType } from '@/models/freelancer.model'
+import { FreelancerType } from '@/models/freelancer.model'
 import { CustomErrors } from '@/validators/CreateFreelancerValidator'
 import { Button, InputLabel, TextField } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 
 export default function ProfileForm() {
 	const { createFreelancer, isPending, error } = useCreateFreelancer()
-	const [formData, setFormData] = useState<Freelancer>({
+	const [formData, setFormData] = useState<FreelancerType>({
 		username: '',
 		email: '',
 		profile_description: '',
@@ -122,7 +122,10 @@ export default function ProfileForm() {
 						searchCriteries={searchCriteries}
 						setObjectValue={data => {
 							setSearchCriteries(data)
-							if (formData.search_criteries !== data) {
+							if (
+								JSON.stringify(formData.search_criteries) !==
+								JSON.stringify(data)
+							) {
 								setClearFields(prev => new Set(prev).add('search_criteries'))
 							}
 						}}
@@ -135,7 +138,10 @@ export default function ProfileForm() {
 						searchCriteries={preferredLocations}
 						setObjectValue={data => {
 							setPreferedLoactions(data)
-							if (formData.preferred_locations !== data) {
+							if (
+								JSON.stringify(formData.preferred_locations) !==
+								JSON.stringify(data)
+							) {
 								setClearFields(prev => new Set(prev).add('preferred_locations'))
 							}
 						}}

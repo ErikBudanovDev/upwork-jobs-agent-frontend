@@ -1,4 +1,5 @@
 import connectDb from '@/lib/db'
+import { API_LINKS } from '@/lib/globals'
 import { FreelancerType, IFreelancer } from '@/models/freelancer.model'
 import { IJob } from '@/types/job.type'
 import { CustomErrors } from '@/validators/CreateFreelancerValidator'
@@ -8,7 +9,7 @@ class FreelancerService {
 	async getFreelancersJobs(freelancers: IFreelancer[]) {
 		try {
 			const response = await axios.post<Record<string, IJob[]>>(
-				'/api/freelancer/jobs',
+				API_LINKS.jobs as string,
 				{
 					freelancers,
 				}
@@ -22,7 +23,7 @@ class FreelancerService {
 	async getFreelancerJob(freelancer: string, searchParams: [string, string][]) {
 		const queryString = new URLSearchParams(searchParams).toString()
 		const response = await axios.get<IJob[]>(
-			`/api/freelancer/jobs?freelancerId=${freelancer}&${queryString}`
+			`${API_LINKS.jobs}?freelancerId=${freelancer}&${queryString}`
 		)
 		return response.data
 	}
@@ -30,7 +31,7 @@ class FreelancerService {
 		try {
 			await connectDb()
 			const response = await axios.get<IFreelancer>(
-				'/api/freelancer?freelancerId=' + freelancerId
+				`${API_LINKS.freelancers}?freelancerId=` + freelancerId
 			)
 			return response.data
 		} catch (e) {
@@ -41,9 +42,12 @@ class FreelancerService {
 	async updateFreelancer(data: IFreelancer) {
 		try {
 			await connectDb()
-			const response = await axios.put<IFreelancer>('/api/freelancer', {
-				...data,
-			})
+			const response = await axios.put<IFreelancer>(
+				`${API_LINKS.freelancers}`,
+				{
+					...data,
+				}
+			)
 			return response.data
 		} catch (e) {
 			console.log(e)
@@ -52,8 +56,9 @@ class FreelancerService {
 
 	async create(data: FreelancerType, agencyId: string) {
 		try {
-			const response = (await axios.post('/api/freelancer', { data, agencyId }))
-				.data
+			const response = (
+				await axios.post(`${API_LINKS.freelancers}`, { data, agencyId })
+			).data
 
 			return response
 		} catch (e) {
@@ -68,7 +73,7 @@ class FreelancerService {
 	}
 	async delete(freelancer: string, agencyId: string) {
 		try {
-			await axios.delete('/api/freelancer', {
+			await axios.delete(`${API_LINKS.freelancers}`, {
 				data: {
 					freelancer,
 					agencyId,
@@ -80,8 +85,9 @@ class FreelancerService {
 			console.log(e)
 		}
 	}
-	async getByAgency(agencyId: string) {
-		return (await axios.get<IFreelancer[]>('/api/freelancer')).data
+	async getByAgency() {
+		console.log(API_LINKS)
+		return (await axios.get<IFreelancer[]>(`${API_LINKS.freelancers}`)).data
 	}
 }
 

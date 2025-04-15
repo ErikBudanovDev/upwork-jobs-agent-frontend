@@ -15,7 +15,7 @@ const FreelancerPage = () => {
 	const params = useParams<{ agencyId: string; freelancerId: string }>()
 
 	const [updatedFreelancer, setUpdatedFreelancer] =
-		useState<IFreelancer | null>(freelancer)
+		useState<IFreelancer | null>(freelancer ?? null)
 
 	useEffect(() => {
 		if (freelancer) {
@@ -25,11 +25,15 @@ const FreelancerPage = () => {
 
 	const handleFreelancerUpdate = (updatedData: Partial<IFreelancer>) => {
 		if (updatedFreelancer) {
-			const newFreelancer = { ...updatedFreelancer, ...updatedData }
-			setUpdatedFreelancer(newFreelancer)
+			//eslint-disable-next-line @typescript-eslint/no-unused-vars
+			const { $assertPopulated, ...newFreelancer } = {
+				...updatedFreelancer,
+				...updatedData,
+			}
+			setUpdatedFreelancer(newFreelancer as IFreelancer)
 
 			if (!isPending) {
-				updateFreelancer(newFreelancer)
+				updateFreelancer(newFreelancer as IFreelancer)
 			}
 		}
 	}
