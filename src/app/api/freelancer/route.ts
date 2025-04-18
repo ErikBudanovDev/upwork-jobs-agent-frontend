@@ -3,6 +3,7 @@ import Freelancer, {
 	FreelancerType,
 	IFreelancer,
 } from '@/models/freelancer.model'
+import authService from '@/services/AuthService'
 import { CustomErrors } from '@/validators/CreateFreelancerValidator'
 import mongoose from 'mongoose'
 import { NextRequest, NextResponse } from 'next/server'
@@ -10,14 +11,25 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function GET(req: NextRequest) {
 	try {
 		const freelancerId = req.nextUrl.searchParams.get('freelancerId')
+		const currentUser = await authService.getCurrentUser(req)
+		if (!currentUser) {
+			return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+		}
 		await connectDb()
 
 		if (freelancerId) {
-			const response = await Freelancer.findById(freelancerId)
+			const response = await Freelancer.find({
+				_id: freelancerId,
+				agencyId: new mongoose.Types.ObjectId(currentUser.agencyId.toString()),
+			})
 			return NextResponse.json(response)
 		}
 
-		return NextResponse.json(await Freelancer.find())
+		return NextResponse.json(
+			await Freelancer.find({
+				agencyId: new mongoose.Types.ObjectId(currentUser.agencyId.toString()),
+			})
+		)
 	} catch (e) {
 		console.log(e)
 	}
@@ -50,7 +62,13 @@ export async function POST(req: NextRequest) {
 	try {
 		await connectDb()
 		validateFreelancer(freelancer)
-		const newFreelancer = await Freelancer.create(freelancer)
+		const currentUser = await authService.getCurrentUser(req)
+		if (!currentUser)
+			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+		const newFreelancer = await Freelancer.create({
+			...freelancer,
+			agencyId: currentUser.agencyId,
+		})
 
 		return NextResponse.json({ newFreelancer }, { status: 201 })
 	} catch (e) {

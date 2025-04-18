@@ -30,6 +30,7 @@ class FreelancerService {
 	async getMine(freelancerId: string) {
 		try {
 			await connectDb()
+
 			const response = await axios.get<IFreelancer>(
 				`${API_LINKS.freelancers}?freelancerId=` + freelancerId
 			)
@@ -86,7 +87,6 @@ class FreelancerService {
 		}
 	}
 	async getByAgency() {
-		console.log(API_LINKS)
 		return (await axios.get<IFreelancer[]>(`${API_LINKS.freelancers}`)).data
 	}
 }

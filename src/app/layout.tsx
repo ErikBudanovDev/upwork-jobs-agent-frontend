@@ -1,3 +1,4 @@
+import { UserProvider } from '@/contexts/UserContext'
 import type { Metadata } from 'next'
 import './globals.css'
 import { Providers } from './providers'
@@ -15,7 +16,9 @@ export default function RootLayout({
 	return (
 		<html lang='en'>
 			<body className='flex flex-col min-h-[100vh]'>
-				<Providers>{children}</Providers>
+				<Providers>
+					<UserProvider>{children}</UserProvider>
+				</Providers>
 			</body>
 		</html>
 	)

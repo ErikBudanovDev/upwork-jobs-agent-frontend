@@ -7,6 +7,7 @@ export interface FreelancerType {
 	search_criteries: Record<string, string>
 	username: string
 	preferred_locations: Record<string, string>
+	agencyId: object
 }
 
 export interface IFreelancer extends Document, FreelancerType {}
@@ -26,6 +27,7 @@ const freelancerSchema = new Schema<IFreelancer>({
 		of: String,
 		required: true,
 	},
+	agencyId: { type: mongoose.Types.ObjectId, ref: 'agency' },
 })
 const Freelancer: mongoose.Model<IFreelancer> =
 	mongoose.models.freelancers ||
