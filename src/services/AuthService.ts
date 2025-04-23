@@ -1,3 +1,4 @@
+import { API_LINKS, SERVER_CONFIG } from '@/lib/globals'
 import { IUser } from '@/types/user.type'
 import axios, { AxiosError } from 'axios'
 import { NextRequest } from 'next/server'
@@ -9,7 +10,7 @@ class AuthService {
 				const token = (await req.cookies.get('session')) || ''
 				if (token) {
 					const response = await axios.get<IUser>(
-						'http://localhost:3000/api/auth/',
+						`${SERVER_CONFIG.server}:${SERVER_CONFIG.port}/${API_LINKS.auth}`,
 						{
 							headers: {
 								Cookie: `session=${token.value}`,
@@ -19,7 +20,9 @@ class AuthService {
 					return response.data
 				}
 			}
-			const response = await axios.get<IUser>('/api/auth')
+			const response = await axios.get<IUser>(
+				`${SERVER_CONFIG.server}:${SERVER_CONFIG.port}/${API_LINKS.auth}`
+			)
 			return response.data
 		} catch (e) {
 			if (
@@ -33,7 +36,7 @@ class AuthService {
 	}
 	async setToken(token: string) {
 		const response = await axios.post<IUser>(
-			'http://localhost:3000/api/auth/',
+			`${SERVER_CONFIG.server}:${SERVER_CONFIG.port}/${API_LINKS.auth}`,
 			{
 				token,
 			}

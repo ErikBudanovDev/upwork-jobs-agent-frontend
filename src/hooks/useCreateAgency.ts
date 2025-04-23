@@ -1,10 +1,8 @@
-import { useUser } from '@/contexts/UserContext'
 import agencyService from '@/services/AgencyService'
 import { IAgency } from '@/types/agency.type'
 import { useMutation } from '@tanstack/react-query'
 
 export const useCreateAgency = () => {
-	const user = useUser()
 	const {
 		mutate: createAgency,
 		isPending,

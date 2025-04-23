@@ -1,22 +1,29 @@
+import { API_LINKS, SERVER_CONFIG } from '@/lib/globals'
 import { InviteDocument } from '@/models/invite.model'
 import { InviteAnswer } from '@/types/invite.type'
 import axios from 'axios'
 
 class InviteService {
 	async createInvite(to: string) {
-		const response = await axios.post('http://localhost:3000/api/invite', {
-			to,
-		})
+		const response = await axios.post(
+			`${SERVER_CONFIG.server}:${SERVER_CONFIG.port}/${API_LINKS.invite}`,
+			{
+				to,
+			}
+		)
 		return response.data
 	}
 	async getInvites() {
 		const response = await axios.get<InviteDocument[]>(
-			'http://localhost:3000/api/invite'
+			`${SERVER_CONFIG.server}:${SERVER_CONFIG.port}/${API_LINKS.invite}`
 		)
 		return response.data
 	}
 	async answerInvite(data: InviteAnswer) {
-		const response = await axios.put('http://localhost:3000/api/invite', data)
+		const response = await axios.put(
+			`${SERVER_CONFIG.server}:${SERVER_CONFIG.port}/${API_LINKS.invite}`,
+			data
+		)
 		return response.data
 	}
 }

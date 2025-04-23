@@ -1,6 +1,7 @@
 'use client'
 
 import { useGetJobs } from '@/hooks/queries/useGetJobs'
+import { useUpdateFreelancer } from '@/hooks/queries/useUpdateFreelancer'
 import { useGetAgency } from '@/hooks/useGetAgency'
 import { useRemoveFreelancer } from '@/hooks/useRemoveFreelancer'
 import { type AgencyFreelancer } from '@/lib/agency'
@@ -15,6 +16,7 @@ const AgencyFreelancer = ({ freelancers }: { freelancers: IFreelancer[] }) => {
 	const { removeFreelancer } = useRemoveFreelancer()
 	const { push } = useRouter()
 	const { agency } = useGetAgency()
+	const { updateFreelancer, isPending } = useUpdateFreelancer()
 	const handleDelete = (freelancerId: string) => {
 		removeFreelancer(freelancerId)
 	}
@@ -80,7 +82,16 @@ const AgencyFreelancer = ({ freelancers }: { freelancers: IFreelancer[] }) => {
 							</Link>
 						</TableCell>
 						<TableCell className='switcher'>
-							<Switch />
+							<Switch
+								onChange={e =>
+									updateFreelancer({
+										enabled: e.target.checked,
+										_id: freelancer._id,
+									})
+								}
+								disabled={isPending}
+								checked={freelancer.enabled}
+							/>
 						</TableCell>
 						<TableCell className='delete'>
 							<IconButton

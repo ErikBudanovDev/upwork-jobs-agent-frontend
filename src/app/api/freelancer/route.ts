@@ -1,7 +1,7 @@
 import connectDb from '@/lib/db'
 import Freelancer, {
-	FreelancerType,
 	IFreelancer,
+	NewFreelancer,
 } from '@/models/freelancer.model'
 import authService from '@/services/AuthService'
 import { CustomErrors } from '@/validators/CreateFreelancerValidator'
@@ -16,7 +16,6 @@ export async function GET(req: NextRequest) {
 			return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
 		}
 		await connectDb()
-
 		if (freelancerId) {
 			const response = await Freelancer.find({
 				_id: freelancerId,
@@ -38,6 +37,7 @@ export async function GET(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
 	try {
+		connectDb()
 		const data: IFreelancer = await req.json()
 		const updatedFreelancer = await Freelancer.findByIdAndUpdate(
 			new mongoose.Types.ObjectId(data._id as mongoose.Types.ObjectId),
@@ -58,7 +58,7 @@ export async function DELETE(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-	const { data: freelancer }: { data: FreelancerType } = await req.json()
+	const { data: freelancer }: { data: NewFreelancer } = await req.json()
 	try {
 		await connectDb()
 		validateFreelancer(freelancer)
@@ -83,7 +83,7 @@ export async function POST(req: NextRequest) {
 	return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
 }
 
-const validateFreelancer = (freelancer: FreelancerType) => {
+const validateFreelancer = (freelancer: NewFreelancer) => {
 	const errors = []
 	if (!freelancer.username) {
 		errors.push({ field: 'username', message: 'Username is required' })

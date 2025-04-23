@@ -1,6 +1,5 @@
 'use client'
 import AgencyFreelancer from '@/components/Agency/AgencyFreelancer'
-import { useUser } from '@/contexts/UserContext'
 import { useGetAgencyFreelancers } from '@/hooks/useGetAgencyFreelancers'
 import {
 	Paper,
@@ -13,7 +12,6 @@ import {
 const TABLE_HEADS = ['Username', 'Jobs', 'Matched', 'Unmatched', 'enabled', '']
 
 const AgencyPage = () => {
-	const { user, loading } = useUser()
 	const { freelancers } = useGetAgencyFreelancers()
 	return (
 		<div className='container mx-auto'>

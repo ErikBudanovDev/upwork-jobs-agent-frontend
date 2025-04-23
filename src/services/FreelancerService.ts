@@ -1,6 +1,6 @@
 import connectDb from '@/lib/db'
 import { API_LINKS } from '@/lib/globals'
-import { FreelancerType, IFreelancer } from '@/models/freelancer.model'
+import { IFreelancer, NewFreelancer } from '@/models/freelancer.model'
 import { IJob } from '@/types/job.type'
 import { CustomErrors } from '@/validators/CreateFreelancerValidator'
 import axios, { AxiosError } from 'axios'
@@ -40,7 +40,7 @@ class FreelancerService {
 		}
 	}
 
-	async updateFreelancer(data: IFreelancer) {
+	async updateFreelancer(data: Partial<IFreelancer>) {
 		try {
 			await connectDb()
 			const response = await axios.put<IFreelancer>(
@@ -55,7 +55,7 @@ class FreelancerService {
 		}
 	}
 
-	async create(data: FreelancerType, agencyId: string) {
+	async create(data: NewFreelancer, agencyId: string) {
 		try {
 			const response = (
 				await axios.post(`${API_LINKS.freelancers}`, { data, agencyId })
@@ -88,6 +88,13 @@ class FreelancerService {
 	}
 	async getByAgency() {
 		return (await axios.get<IFreelancer[]>(`${API_LINKS.freelancers}`)).data
+	}
+	async setEnabled(data: Partial<IFreelancer>) {
+		return (
+			await axios.put<IFreelancer[]>(`${API_LINKS.freelancers}`, {
+				data,
+			})
+		).data
 	}
 }
 

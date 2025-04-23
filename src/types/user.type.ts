@@ -7,3 +7,9 @@ export interface IUser {
 	password: string
 	email: string
 }
+
+export interface loginForm {
+	email: string
+	password: string
+	isLogin: boolean
+}

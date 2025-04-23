@@ -8,7 +8,6 @@ export async function agencyMiddleware(req: NextRequest) {
 		const user = await authService.getCurrentUser(req)
 		if (user && user.agencyId) {
 			const agency = await agencyService.getAgencyByID(user.agencyId.toString())
-			console.log(user, user.agencyId)
 			if (agency && !req.nextUrl.pathname.startsWith(`/agency/${agency._id}`)) {
 				return NextResponse.redirect(new URL(`/agency/${agency._id}`, req.url))
 			}

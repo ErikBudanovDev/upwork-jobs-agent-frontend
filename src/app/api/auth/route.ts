@@ -35,13 +35,14 @@ export async function POST(req: NextRequest) {
 
 		const decoded = await adminAuth.verifyIdToken(token)
 		const { uid } = decoded
+		console.log(decoded)
 		const firebaseUser = await adminAuth.getUser(uid)
 		const existedUser = await User.findOne({ uid })
 		const response = NextResponse.json({ message: 'Authenticated' })
 		if (!existedUser) {
 			await User.create({
 				uid,
-				username: firebaseUser.displayName,
+				username: firebaseUser.displayName ?? firebaseUser.email,
 				password: firebaseUser.passwordHash || 'testing',
 				email: firebaseUser.email,
 			})

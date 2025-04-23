@@ -1,4 +1,5 @@
 import { Agency } from '@/lib/agency'
+import { API_LINKS, SERVER_CONFIG } from '@/lib/globals'
 import { AgencyDocument } from '@/models/agency.model'
 import { IAgency } from '@/types/agency.type'
 import { IUser } from '@/types/user.type'
@@ -12,7 +13,7 @@ class AgencyService {
 	}
 	async getAgencyByID(id: string) {
 		const response = await axios.get<AgencyDocument>(
-			`http://localhost:3000/api/agency?id=${id}`
+			`${SERVER_CONFIG.server}:${SERVER_CONFIG.port}/${API_LINKS.agency}?id=${id}`
 		)
 		return response.data
 	}
@@ -22,7 +23,7 @@ class AgencyService {
 			const token = req.cookies.get('session') || ''
 			if (token) {
 				const response = await axios.get<Agency>(
-					'http://localhost:3000/api/agency',
+					`${SERVER_CONFIG.server}:${SERVER_CONFIG.port}/${API_LINKS.agency}`,
 					{
 						headers: {
 							Cookie: `session=${token.value};`,
@@ -32,12 +33,14 @@ class AgencyService {
 				return response.data
 			}
 		}
-		const response = await axios.get<Agency>('http://localhost:3000/api/agency')
+		const response = await axios.get<Agency>(
+			`${SERVER_CONFIG.server}:${SERVER_CONFIG.port}/${API_LINKS.agency}`
+		)
 		return response.data
 	}
 	async getAgencyMembers() {
 		const response = await axios.get<IUser[]>(
-			'http://localhost:3000/api/agency/members'
+			`${SERVER_CONFIG.server}:${SERVER_CONFIG.port}/${API_LINKS.agency}/members`
 		)
 		return response.data
 	}
