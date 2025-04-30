@@ -10,22 +10,8 @@ export type AgencyFreelancer = Omit<
 	| 'search_criteries'
 > & { id: string }
 export interface Agency {
+	_id: string
 	id: string
 	name: string
 	freelancers: AgencyFreelancer[]
-}
-
-export const agency: Agency = {
-	id: 'testing',
-	name: 'Testing Agency',
-	freelancers: [
-		{
-			id: '67dd2ac1d20354bbf47db489',
-			username: 'Vage Budanovs',
-		},
-		{
-			id: '67c58cf582808a8dbd7e8b38',
-			username: 'Erik Buddanov',
-		},
-	],
 }

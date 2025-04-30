@@ -13,7 +13,6 @@ const TABLE_HEADS = ['Username', 'Jobs', 'Matched', 'Unmatched', 'enabled', '']
 
 const AgencyPage = () => {
 	const { freelancers } = useGetAgencyFreelancers()
-
 	return (
 		<div className='container mx-auto'>
 			<Paper className='p-4'>

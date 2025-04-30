@@ -1,8 +1,10 @@
 'use client'
 
 import { useGetJobs } from '@/hooks/queries/useGetJobs'
+import { useUpdateFreelancer } from '@/hooks/queries/useUpdateFreelancer'
+import { useGetAgency } from '@/hooks/useGetAgency'
 import { useRemoveFreelancer } from '@/hooks/useRemoveFreelancer'
-import { agency, type AgencyFreelancer } from '@/lib/agency'
+import { type AgencyFreelancer } from '@/lib/agency'
 import { IFreelancer } from '@/models/freelancer.model'
 import { DeleteForever } from '@mui/icons-material'
 import { IconButton, Switch, TableCell, TableRow } from '@mui/material'
@@ -13,6 +15,8 @@ const AgencyFreelancer = ({ freelancers }: { freelancers: IFreelancer[] }) => {
 	const { jobs, isLoading } = useGetJobs(freelancers)
 	const { removeFreelancer } = useRemoveFreelancer()
 	const { push } = useRouter()
+	const { agency } = useGetAgency()
+	const { updateFreelancer, isPending } = useUpdateFreelancer()
 	const handleDelete = (freelancerId: string) => {
 		removeFreelancer(freelancerId)
 	}
@@ -24,6 +28,7 @@ const AgencyFreelancer = ({ freelancers }: { freelancers: IFreelancer[] }) => {
 			</TableRow>
 		)
 	return (
+		agency &&
 		jobs &&
 		Boolean(Object.values(jobs).length) &&
 		freelancers.length > 0 &&
@@ -37,7 +42,7 @@ const AgencyFreelancer = ({ freelancers }: { freelancers: IFreelancer[] }) => {
 								e.target instanceof HTMLElement &&
 								!e.target.closest('.switcher, .delete, .jobs')
 							) {
-								push(`/agency/${agency.id}/freelancer/${freelancer._id}`)
+								push(`/agency/${agency._id}/freelancer/${freelancer._id}`)
 							}
 						}}
 						className='cursor-pointer'
@@ -47,7 +52,7 @@ const AgencyFreelancer = ({ freelancers }: { freelancers: IFreelancer[] }) => {
 						<TableCell className='jobs'>
 							<Link
 								className='underline text-blue-500'
-								href={`/agency/${agency.id}/freelancer/${freelancer._id}/jobs`}
+								href={`/agency/${agency._id}/freelancer/${freelancer._id}/jobs`}
 							>
 								{jobs[freelancer._id as string].length}
 							</Link>
@@ -55,7 +60,7 @@ const AgencyFreelancer = ({ freelancers }: { freelancers: IFreelancer[] }) => {
 						<TableCell className='jobs'>
 							<Link
 								className='underline text-blue-500'
-								href={`/agency/${agency.id}/freelancer/${freelancer._id}/jobs?status=true`}
+								href={`/agency/${agency._id}/freelancer/${freelancer._id}/jobs?status=true`}
 							>
 								{
 									jobs[freelancer._id as string].filter(
@@ -67,7 +72,7 @@ const AgencyFreelancer = ({ freelancers }: { freelancers: IFreelancer[] }) => {
 						<TableCell className='jobs'>
 							<Link
 								className='underline text-blue-500'
-								href={`/agency/${agency.id}/freelancer/${freelancer._id}/jobs?status=false`}
+								href={`/agency/${agency._id}/freelancer/${freelancer._id}/jobs?status=false`}
 							>
 								{
 									jobs[freelancer._id as string].filter(
@@ -77,7 +82,16 @@ const AgencyFreelancer = ({ freelancers }: { freelancers: IFreelancer[] }) => {
 							</Link>
 						</TableCell>
 						<TableCell className='switcher'>
-							<Switch />
+							<Switch
+								onChange={e =>
+									updateFreelancer({
+										enabled: e.target.checked,
+										_id: freelancer._id,
+									})
+								}
+								disabled={isPending}
+								checked={freelancer.enabled}
+							/>
 						</TableCell>
 						<TableCell className='delete'>
 							<IconButton
