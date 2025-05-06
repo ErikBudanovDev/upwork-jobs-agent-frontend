@@ -12,7 +12,9 @@ const userSchema = new Schema<UserInterface>(
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'agencies',
 		},
+		slackWebhookUrl: { type: String, required: false },
 		email: { type: String, required: true },
+		emailNotifications: { type: Boolean, default: false },
 	},
 	{ timestamps: true }
 )

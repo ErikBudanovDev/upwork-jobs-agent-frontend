@@ -7,6 +7,7 @@ import { Box, Button, Typography } from '@mui/material'
 import Link from 'next/link'
 import LogOut from '../auth/LogOut'
 import Invite from './Invites/Invite'
+import NotificationSettings from './Notifications/Notification'
 
 const AgencyHeader = () => {
 	const { agency } = useGetAgency()
@@ -29,6 +30,7 @@ const AgencyHeader = () => {
 							</Button>
 						</Link>
 						<div className='flex gap-2'>
+							<NotificationSettings />
 							<Invite />
 
 							<Link href={`/agency/${agency._id}/freelancer/new`}>

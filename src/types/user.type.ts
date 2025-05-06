@@ -6,6 +6,8 @@ export interface IUser {
 	username: string
 	password: string
 	email: string
+	slackWebhookUrl: string
+	emailNotifications: boolean
 }
 
 export interface loginForm {

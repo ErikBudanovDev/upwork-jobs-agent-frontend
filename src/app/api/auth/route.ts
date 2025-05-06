@@ -12,7 +12,6 @@ export async function GET(req: NextRequest) {
 		const user = await User.findOne({ uid: firebaseUser.uid }).select(
 			'-password'
 		)
-
 		if (user) {
 			return NextResponse.json(user)
 		}
@@ -35,7 +34,6 @@ export async function POST(req: NextRequest) {
 
 		const decoded = await adminAuth.verifyIdToken(token)
 		const { uid } = decoded
-		console.log(decoded)
 		const firebaseUser = await adminAuth.getUser(uid)
 		const existedUser = await User.findOne({ uid })
 		const response = NextResponse.json({ message: 'Authenticated' })

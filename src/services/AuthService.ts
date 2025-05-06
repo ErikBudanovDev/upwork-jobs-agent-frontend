@@ -29,7 +29,7 @@ class AuthService {
 				e instanceof AxiosError &&
 				e.response?.data.message == 'User not found'
 			) {
-				console.log('Unauthorized')
+				console.log('Unauthorized', e.response?.data)
 			}
 		}
 		return null
