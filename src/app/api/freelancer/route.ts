@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
 		}
 
 		return NextResponse.json(
-			await Freelancer.find({
+			await Freelancer.findOne({
 				agencyId: new mongoose.Types.ObjectId(currentUser.agencyId.toString()),
 			})
 		)

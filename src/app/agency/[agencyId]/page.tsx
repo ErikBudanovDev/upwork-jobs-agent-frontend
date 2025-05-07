@@ -9,7 +9,15 @@ import {
 	TableHead,
 	TableRow,
 } from '@mui/material'
-const TABLE_HEADS = ['Username', 'Jobs', 'Matched', 'Unmatched', 'enabled', '']
+const TABLE_HEADS = [
+	'Username',
+	'Jobs',
+	'Matched',
+	'Unmatched',
+	'Applied',
+	'enabled',
+	'',
+]
 
 const AgencyPage = () => {
 	const { freelancers } = useGetAgencyFreelancers()

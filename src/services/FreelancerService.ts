@@ -31,7 +31,7 @@ class FreelancerService {
 		try {
 			await connectDb()
 
-			const response = await axios.get<IFreelancer>(
+			const response = await axios.get<IFreelancer[]>(
 				`${API_LINKS.freelancers}?freelancerId=` + freelancerId
 			)
 			return response.data
