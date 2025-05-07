@@ -17,7 +17,6 @@ const CreateMapField = ({
 		setObjectValue([...searchCriteries, ''])
 	}
 	const handleRemoveCriterion = (index: number) => {
-		console.log(searchCriteries)
 		if (searchCriteries.length <= 1) {
 			setObjectValue([''])
 		} else {

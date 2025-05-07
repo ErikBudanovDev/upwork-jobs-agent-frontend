@@ -2,14 +2,14 @@
 
 import CreateMapField from '@/components/Agency/Freelancer/CreateMapField'
 import { useCreateFreelancer } from '@/hooks/useCreateFreelancer'
-import { FreelancerType } from '@/models/freelancer.model'
+import { NewFreelancer } from '@/models/freelancer.model'
 import { CustomErrors } from '@/validators/CreateFreelancerValidator'
 import { Button, InputLabel, TextField } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 
 export default function ProfileForm() {
 	const { createFreelancer, isPending, error } = useCreateFreelancer()
-	const [formData, setFormData] = useState<FreelancerType>({
+	const [formData, setFormData] = useState<NewFreelancer>({
 		username: '',
 		email: '',
 		profile_description: '',
@@ -22,7 +22,7 @@ export default function ProfileForm() {
 	const [clearFields, setClearFields] = useState<Set<string>>(new Set())
 
 	useEffect(() => {
-		setFormData((prev: FreelancerType) => ({
+		setFormData((prev: NewFreelancer) => ({
 			...prev,
 			search_criteries: Object.fromEntries(
 				searchCriteries.map((item, index) => [index, item])

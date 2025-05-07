@@ -1,4 +1,4 @@
-import { FreelancerType, IFreelancer } from '@/models/freelancer.model'
+import { IFreelancer, NewFreelancer } from '@/models/freelancer.model'
 import { freelancerService } from '@/services/FreelancerService'
 import { IJob } from '@/types/job.type'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
@@ -14,7 +14,7 @@ export const useCreateFreelancer = () => {
 		isPending,
 		error,
 	} = useMutation({
-		mutationFn: (data: FreelancerType) =>
+		mutationFn: (data: NewFreelancer) =>
 			freelancerService.create(data, agencyId),
 		mutationKey: ['create freelancer'],
 		onSuccess: async (newFreelancer: { newFreelancer: IFreelancer }) => {
