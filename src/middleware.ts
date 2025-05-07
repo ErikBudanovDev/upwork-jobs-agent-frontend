@@ -21,5 +21,5 @@ export default async function middleware(req: NextRequest) {
 		const agencyResult = agencyMiddleware(req)
 		return agencyResult
 	}
-	return NextResponse.next()
+	return NextResponse.next();
 }
