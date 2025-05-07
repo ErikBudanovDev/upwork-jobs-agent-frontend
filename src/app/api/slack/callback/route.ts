@@ -4,7 +4,7 @@ import User from '@/models/user.model'
 import authService from '@/services/AuthService'
 import axios from 'axios'
 import { NextRequest, NextResponse } from 'next/server'
-
+import qs from 'qs'
 export async function GET(req: NextRequest) {
 	const code = req.nextUrl.searchParams.get('code')
 
@@ -15,13 +15,15 @@ export async function GET(req: NextRequest) {
 	try {
 		const { data } = await axios.post(
 			'https://slack.com/api/oauth.v2.access',
-			null,
+			qs.stringify({
+				client_id: process.env.NEXT_PUBLIC_SLACK_CLIENT_ID!,
+				client_secret: process.env.NEXT_PUBLIC_SLACK_CLIENT_SECRET!,
+				code,
+				redirect_uri: `${SERVER_CONFIG.server}/api/slack/callback`,
+			}),
 			{
-				params: {
-					client_id: `${process.env.NEXT_PUBLIC_SLACK_CLIENT_ID}`,
-					client_secret: `${process.env.NEXT_PUBLIC_SLACK_CLIENT_SECRET}`,
-					code,
-					redirect_uri: `${SERVER_CONFIG.server}/api/slack/callback`,
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded',
 				},
 			}
 		)
