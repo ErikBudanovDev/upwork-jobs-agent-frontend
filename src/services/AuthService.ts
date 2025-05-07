@@ -10,7 +10,7 @@ class AuthService {
 				const token = (await req.cookies.get('session')) || ''
 				if (token) {
 					const response = await axios.get<IUser>(
-						`${SERVER_CONFIG.server}:${SERVER_CONFIG.port}/${API_LINKS.auth}`,
+						`${SERVER_CONFIG.server}/${API_LINKS.auth}`,
 						{
 							headers: {
 								Cookie: `session=${token.value}`,
@@ -21,7 +21,7 @@ class AuthService {
 				}
 			}
 			const response = await axios.get<IUser>(
-				`${SERVER_CONFIG.server}:${SERVER_CONFIG.port}/${API_LINKS.auth}`
+				`${SERVER_CONFIG.server}/${API_LINKS.auth}`
 			)
 			return response.data
 		} catch (e) {
@@ -36,7 +36,7 @@ class AuthService {
 	}
 	async setToken(token: string) {
 		const response = await axios.post<IUser>(
-			`${SERVER_CONFIG.server}:${SERVER_CONFIG.port}/${API_LINKS.auth}`,
+			`${SERVER_CONFIG.server}/${API_LINKS.auth}`,
 			{
 				token,
 			}

@@ -26,7 +26,7 @@ export const useSignWithEmailPass = () => {
 			if (data.user) {
 				await authService.setToken(await data.user.getIdToken())
 			}
-			push(`${SERVER_CONFIG.server}:${SERVER_CONFIG.port}/agency/new`)
+			push(`${SERVER_CONFIG.server}/agency/new`)
 		},
 	})
 	return { login, error, isPending }
