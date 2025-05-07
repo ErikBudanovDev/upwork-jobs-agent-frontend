@@ -8,5 +8,4 @@ export const API_LINKS = {
 
 export const SERVER_CONFIG = {
 	server: process.env.NEXT_PUBLIC_SERVER_URI,
-	port: process.env.NEXT_PUBLIC_SERVER_PORT,
 }

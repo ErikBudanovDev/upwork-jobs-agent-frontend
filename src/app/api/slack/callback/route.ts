@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
 					client_id: `${process.env.NEXT_PUBLIC_SLACK_CLIENT_ID}`,
 					client_secret: `${process.env.NEXT_PUBLIC_SLACK_CLIENT_SECRET}`,
 					code,
-					redirect_uri: `${SERVER_CONFIG.server}:${SERVER_CONFIG.port}/api/slack/callback`,
+					redirect_uri: `${SERVER_CONFIG.server}/api/slack/callback`,
 				},
 			}
 		)
