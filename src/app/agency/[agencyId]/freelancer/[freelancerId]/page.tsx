@@ -15,11 +15,11 @@ const FreelancerPage = () => {
 	const params = useParams<{ agencyId: string; freelancerId: string }>()
 
 	const [updatedFreelancer, setUpdatedFreelancer] =
-		useState<IFreelancer | null>(freelancer ?? null)
+		useState<IFreelancer | null>(freelancer ? freelancer[0] ?? null : null)
 
 	useEffect(() => {
 		if (freelancer) {
-			setUpdatedFreelancer(freelancer)
+			setUpdatedFreelancer(freelancer[0] ?? null)
 		}
 	}, [freelancer])
 
@@ -38,61 +38,67 @@ const FreelancerPage = () => {
 		}
 	}
 
-	if (isLoading) return <>Loading...</>
-
+	if (isLoading || !updatedFreelancer) return <>Loading...</>
+	console.log(updatedFreelancer)
 	return (
-		<div className='container mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg'>
-			{updatedFreelancer && (
-				<div className='freelancer-info flex flex-col gap-y-3'>
-					<Typography variant='h5' component='h2' className='flex items-center'>
-						<IconButton
-							onClick={() => router.push(`/agency/${params.agencyId}`)}
+		updatedFreelancer && (
+			<div className='container mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg'>
+				{updatedFreelancer && (
+					<div className='freelancer-info flex flex-col gap-y-3'>
+						<Typography
+							variant='h5'
+							component='h2'
+							className='flex items-center'
 						>
-							<ArrowBackIos />
-						</IconButton>
-						{updatedFreelancer.username}
-					</Typography>
-					<TextField
-						label='Email'
-						value={updatedFreelancer.email}
-						aria-readonly={true}
-					/>
-					<TextField
-						label='Job preferences'
-						multiline
-						defaultValue={updatedFreelancer.job_preferences}
-						onBlur={e => {
-							handleFreelancerUpdate({
-								job_preferences: e.currentTarget.value,
-							})
-						}}
-					/>
-					<TextField
-						label='Profile description'
-						multiline
-						defaultValue={updatedFreelancer.profile_description}
-						onBlur={e => {
-							handleFreelancerUpdate({
-								profile_description: e.target.value,
-							})
-						}}
-					/>
+							<IconButton
+								onClick={() => router.push(`/agency/${params.agencyId}`)}
+							>
+								<ArrowBackIos />
+							</IconButton>
+							{updatedFreelancer.username}
+						</Typography>
+						<TextField
+							label='Email'
+							value={updatedFreelancer.email}
+							aria-readonly={true}
+						/>
+						<TextField
+							label='Job preferences'
+							multiline
+							defaultValue={updatedFreelancer.job_preferences}
+							onBlur={e => {
+								handleFreelancerUpdate({
+									job_preferences: e.currentTarget.value,
+								})
+							}}
+						/>
+						<TextField
+							label='Profile description'
+							multiline
+							defaultValue={updatedFreelancer.profile_description}
+							onBlur={e => {
+								handleFreelancerUpdate({
+									profile_description: e.target.value,
+								})
+							}}
+						/>
 
-					<EditableMap
-						initialMap={updatedFreelancer.search_criteries}
-						title='Search Criteries'
-						updateFreelancer={handleFreelancerUpdate}
-						keyName='search_criteries'
-					/>
-					<EditableMap
-						initialMap={updatedFreelancer.preferred_locations}
-						title='Preferred Locations'
-						updateFreelancer={handleFreelancerUpdate}
-						keyName='preferred_locations'
-					/>
-				</div>
-			)}
-		</div>
+						<EditableMap
+							initialMap={updatedFreelancer.search_criteries}
+							title='Search Criteries'
+							updateFreelancer={handleFreelancerUpdate}
+							keyName='search_criteries'
+						/>
+						<EditableMap
+							initialMap={updatedFreelancer.preferred_locations}
+							title='Preferred Locations'
+							updateFreelancer={handleFreelancerUpdate}
+							keyName='preferred_locations'
+						/>
+					</div>
+				)}
+			</div>
+		)
 	)
 }
 

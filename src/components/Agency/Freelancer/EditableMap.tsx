@@ -15,7 +15,6 @@ const EditableMap = ({
 	keyName: string
 }) => {
 	const [map, setMap] = useState(initialMap)
-
 	const handleChange = (key: string, value: string) => {
 		setMap(prev => ({
 			...prev,

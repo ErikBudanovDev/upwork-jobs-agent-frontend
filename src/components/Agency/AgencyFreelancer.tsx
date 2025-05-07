@@ -6,6 +6,7 @@ import { useGetAgency } from '@/hooks/useGetAgency'
 import { useRemoveFreelancer } from '@/hooks/useRemoveFreelancer'
 import { type AgencyFreelancer } from '@/lib/agency'
 import { IFreelancer } from '@/models/freelancer.model'
+import { JobProposalStatus } from '@/types/job.type'
 import { DeleteForever } from '@mui/icons-material'
 import { IconButton, Switch, TableCell, TableRow } from '@mui/material'
 import Link from 'next/link'
@@ -80,6 +81,13 @@ const AgencyFreelancer = ({ freelancers }: { freelancers: IFreelancer[] }) => {
 									).length
 								}
 							</Link>
+						</TableCell>
+						<TableCell>
+							{
+								jobs[freelancer._id as string].filter(
+									job => job.proposalStatus === JobProposalStatus.applied
+								).length
+							}
 						</TableCell>
 						<TableCell className='switcher'>
 							<Switch

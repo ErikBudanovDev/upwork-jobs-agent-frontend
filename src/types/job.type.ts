@@ -10,7 +10,16 @@ export interface IJob extends Document {
 	createdDateTime: Date
 	ciphertext: string
 	status: JobStatus
+	proposalStatus: JobProposalStatus
 	reason: string
+	notificationStatus: boolean
+	totalSpent: string
+	totalHires: number
+	totalJobs: number
+	totalFeedback: number
+	totalInvites: number
+	totalApplicants: number
+	spendPerHire: number
 }
 export type JobFromAPI = Omit<IJob, 'status' | 'freelancer'>
 export enum JobStatus {
@@ -18,4 +27,12 @@ export enum JobStatus {
 	true = 'TRUE',
 	false = 'FALSE',
 	ongoing = 'ONGOING',
+}
+
+export enum JobProposalStatus {
+	pending = 'pending',
+	sent = 'sent',
+	applied = 'applied',
+	rejected = 'rejected',
+	viewed = 'viewed',
 }
