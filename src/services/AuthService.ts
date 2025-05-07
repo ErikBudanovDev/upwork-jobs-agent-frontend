@@ -44,7 +44,7 @@ class AuthService {
 		return response.data
 	}
 	async getToken(): Promise<{ token: string }> {
-		const response = await axios.get<string>(
+		const response = await axios.get(
 			`${SERVER_CONFIG.server}/${API_LINKS.auth}?onlyToken=true`
 		)
 		return response.data
