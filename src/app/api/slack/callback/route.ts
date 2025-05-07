@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
 				client_id: process.env.NEXT_PUBLIC_SLACK_CLIENT_ID!,
 				client_secret: process.env.NEXT_PUBLIC_SLACK_CLIENT_SECRET!,
 				code,
-				redirect_uri: `${SERVER_CONFIG.server}/api/slack/callback`,
+				redirect_uri: `${SERVER_CONFIG.server}api/slack/callback`,
 			}),
 			{
 				headers: {
@@ -27,6 +27,7 @@ export async function GET(req: NextRequest) {
 				},
 			}
 		)
+		console.log(`${SERVER_CONFIG.server}/api/slack/callback`)
 		if (!data.ok) {
 			return NextResponse.json({ error: data.error }, { status: 400 })
 		}
