@@ -7,5 +7,5 @@ export const API_LINKS = {
 }
 
 export const SERVER_CONFIG = {
-	server: `https://cc9f-5-77-194-39.ngrok-free.app/`,
+	server: process.env.NEXT_PUBLIC_SERVER_URI,
 }
