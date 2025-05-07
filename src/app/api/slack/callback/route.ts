@@ -1,13 +1,13 @@
 import connectDb from '@/lib/db'
+import { adminAuth } from '@/lib/firebase-admin'
 import { SERVER_CONFIG } from '@/lib/globals'
 import User from '@/models/user.model'
-import authService from '@/services/AuthService'
 import axios from 'axios'
 import { NextRequest, NextResponse } from 'next/server'
 import qs from 'qs'
 export async function GET(req: NextRequest) {
 	const code = req.nextUrl.searchParams.get('code')
-
+	console.log()
 	if (!code) {
 		return NextResponse.json({ error: 'No code provided' }, { status: 400 })
 	}
@@ -27,30 +27,41 @@ export async function GET(req: NextRequest) {
 				},
 			}
 		)
-		console.log(`${SERVER_CONFIG.server}/api/slack/callback`)
 		if (!data.ok) {
 			return NextResponse.json({ error: data.error }, { status: 400 })
 		}
 
 		connectDb()
-		const user = await authService.getCurrentUser()
-		if (user) {
-			await User.findOneAndUpdate(
-				{
-					uid: user.uid,
-				},
-				{
-					slackWebhookUrl: data.incoming_webhook.url,
-				},
-				{
-					new: true,
-				}
-			)
+		const token = req.nextUrl.searchParams.get('state')
+		if (token) {
+			const user = await adminAuth.verifyIdToken(token)
+			if (user) {
+				await User.findOneAndUpdate(
+					{
+						uid: user.uid,
+					},
+					{
+						slackWebhookUrl: data.incoming_webhook.url,
+					},
+					{
+						new: true,
+					}
+				)
+			}
 		}
-		return NextResponse.redirect(
-			`${process.env.NEXT_PUBLIC_SERVER_URI}:3000/agency`,
-			{ status: 302 }
-		)
+		const response = NextResponse.redirect(`${SERVER_CONFIG.server}agency`, {
+			status: 302,
+		})
+		response.cookies.set({
+			name: 'session',
+			value: token ?? '',
+			httpOnly: true,
+			path: '/',
+			secure: true,
+			sameSite: 'strict',
+			maxAge: 60 * 60 * 24 * 7,
+		})
+		return response
 	} catch (e) {
 		console.log(e)
 		return NextResponse.json(

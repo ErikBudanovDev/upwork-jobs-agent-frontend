@@ -6,7 +6,12 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest) {
 	const token = req.cookies.get('session')
+	const onlyToken = req.nextUrl.searchParams.get('onlyToken')
+
 	if (token) {
+		if (onlyToken === 'true') {
+			return NextResponse.json({ token: token.value })
+		}
 		connectDb()
 		const firebaseUser = await adminAuth.verifyIdToken(token.value)
 		const user = await User.findOne({ uid: firebaseUser.uid }).select(
