@@ -8,6 +8,7 @@ export interface IUser {
 	email: string
 	slackWebhookUrl: string
 	emailNotifications: boolean
+	telegramChatId: boolean
 }
 
 export interface loginForm {

@@ -3,19 +3,18 @@ import authService from '@/services/AuthService'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function PUT(req: NextRequest) {
-	const user = await authService.getCurrentUser(req)
-	if (user) {
-		const { emailNotifications } = await req.json()
-		console.log()
-		if (user.emailNotifications !== emailNotifications) {
+	const firebaseUser = await authService.getCurrentUser(req)
+	const { emailNotifications } = await req.json()
+	if (firebaseUser) {
+		const user = await User.findOne({ uid: firebaseUser.uid })
+		if (user) {
 			const updatedUser = await User.findOneAndUpdate(
-				{ uid: user.uid },
+				{ _id: user._id },
 				{ emailNotifications },
 				{ new: true }
 			)
-			return NextResponse.json(updatedUser)
+			return NextResponse.json(updatedUser, { status: 200 })
 		}
-		return NextResponse.json({ message: 'User updated' })
 	}
 
 	return NextResponse.json({ message: 'User not found' }, { status: 404 })

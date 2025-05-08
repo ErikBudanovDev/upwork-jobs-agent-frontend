@@ -22,7 +22,6 @@ export async function agencyMiddleware(req: NextRequest) {
 			) {
 				return NextResponse.redirect(new URL('/agency/new', req.url))
 			}
-			console.log('user not found', e)
 		}
 	}
 	return NextResponse.next()
