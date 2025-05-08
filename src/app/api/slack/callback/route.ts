@@ -5,14 +5,25 @@ import User from '@/models/user.model'
 import axios from 'axios'
 import { NextRequest, NextResponse } from 'next/server'
 import qs from 'qs'
+
 export async function GET(req: NextRequest) {
 	const code = req.nextUrl.searchParams.get('code')
-	console.log()
 	if (!code) {
 		return NextResponse.json({ error: 'No code provided' }, { status: 400 })
 	}
 
 	try {
+		const html = `
+		<!DOCTYPE html>
+		<html>
+			<body>
+				<script>
+					window.close();
+				</script>
+				<p>Authorization successful. You can close this window.</p>
+			</body>
+		</html>
+	`
 		const { data } = await axios.post(
 			'https://slack.com/api/oauth.v2.access',
 			qs.stringify({
@@ -49,19 +60,12 @@ export async function GET(req: NextRequest) {
 				)
 			}
 		}
-		const response = NextResponse.redirect(`${SERVER_CONFIG.server}agency`, {
-			status: 302,
+
+		return new NextResponse(html, {
+			headers: {
+				'Content-Type': 'text/html',
+			},
 		})
-		response.cookies.set({
-			name: 'session',
-			value: token ?? '',
-			httpOnly: true,
-			path: '/',
-			secure: true,
-			sameSite: 'strict',
-			maxAge: 60 * 60 * 24 * 7,
-		})
-		return response
 	} catch (e) {
 		console.log(e)
 		return NextResponse.json(

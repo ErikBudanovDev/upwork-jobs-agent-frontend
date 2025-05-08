@@ -34,13 +34,23 @@ const NotificationSettings = () => {
 						<ConfigureEmail />
 					</Box>
 					<Box className='flex gap-4'>
-						<Button startIcon={<Telegram />} variant='outlined' color='inherit'>
-							<Link
-								className='normal-case'
-								href={`https://t.me/UpworkJobReminder_bot?start=${user.user?.uid}`}
-							>
-								Add to Telegram
-							</Link>
+						<Button
+							startIcon={<Telegram />}
+							variant='outlined'
+							color='inherit'
+							className='normal-case'
+						>
+							{!user.user?.telegramChatId ? (
+								<Link
+									target='_blank'
+									className='normal-case'
+									href={`https://t.me/UpworkJobReminder_bot?start=${user.user?.uid}`}
+								>
+									Add to Telegram
+								</Link>
+							) : (
+								'Telegram Connected'
+							)}
 						</Button>
 					</Box>
 					<Box className='flex gap-4'>

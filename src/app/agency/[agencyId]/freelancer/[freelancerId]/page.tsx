@@ -39,7 +39,6 @@ const FreelancerPage = () => {
 	}
 
 	if (isLoading || !updatedFreelancer) return <>Loading...</>
-	console.log(updatedFreelancer)
 	return (
 		updatedFreelancer && (
 			<div className='container mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg'>
