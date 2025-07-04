@@ -65,11 +65,12 @@ const SignForm = ({ loginPage }: { loginPage?: boolean }) => {
 						{passVisible ? <VisibilityOff /> : <Visibility />}
 					</IconButton>
 				</div>
-				<div>Or</div>
-				<MuiLink href={`/auth/${loginPage ? 'register' : 'login'}`}>
-					{loginPage ? 'Register' : 'Login'}
-				</MuiLink>
-				<Button type='submit' variant='contained' className='w-full mt-4'>
+				<div className="flex flex-col items-center my-4">
+					<MuiLink href={`/auth/${loginPage ? 'register' : 'login'}`} className="mt-2">
+						{loginPage ? 'Register' : 'Login'}
+					</MuiLink>
+				</div>
+				<Button type='submit' className='w-full mt-4 bg-primary text-white border border-primary hover:bg-primary/90'>
 					Submit
 				</Button>
 				<div className='pt-4 flex'>

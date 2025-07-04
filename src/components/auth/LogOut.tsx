@@ -21,7 +21,7 @@ const LogOut = () => {
 		}
 	}
 	return (
-		<Button onClick={handleLogOut} endIcon={<Logout />} variant='contained'>
+		<Button onClick={handleLogOut} endIcon={<Logout />} className='w-full bg-primary text-white border border-primary hover:bg-primary/90'>
 			<Typography className='ml-2 normal-case'>Logout</Typography>
 		</Button>
 	)

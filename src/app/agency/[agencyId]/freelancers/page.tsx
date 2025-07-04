@@ -20,7 +20,7 @@ const TABLE_HEADS = [
 	'',
 ]
 
-const AgencyPage = () => {
+const FreelancersPage = () => {
 	const { freelancers } = useGetAgencyFreelancers()
 	return (
 		<div className='container mx-auto'>
@@ -43,4 +43,4 @@ const AgencyPage = () => {
 	)
 }
 
-export default AgencyPage
+export default FreelancersPage 

@@ -29,19 +29,6 @@ const AgencyHeader = () => {
 								</Typography>
 							</Button>
 						</Link>
-						<div className='flex gap-2'>
-							<NotificationSettings />
-							<Invite />
-
-							<Link href={`/agency/${agency._id}/freelancer/new`}>
-								<Button startIcon=<Add /> color='inherit' variant='contained'>
-									<Typography className='ml-2 normal-case'>
-										Add Freelancer
-									</Typography>
-								</Button>
-							</Link>
-							<LogOut />
-						</div>
 					</Box>
 				</div>
 			</header>
