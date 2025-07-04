@@ -31,7 +31,7 @@ const EditableMap = ({
 			}, {} as { [key: string]: string })
 
 		updateFreelancer(newObj)
-	}, [map])
+	}, [map, keyName, updateFreelancer])
 	const handleAdd = (value: string) => {
 		setMap(prevMap => {
 			const entries = Object.values(prevMap)

@@ -2,12 +2,9 @@
 
 import { useUser } from '@/contexts/UserContext'
 import { useGetAgency } from '@/hooks/useGetAgency'
-import { AccountCircle, Add } from '@mui/icons-material'
+import { AccountCircle } from '@mui/icons-material'
 import { Box, Button, Typography } from '@mui/material'
 import Link from 'next/link'
-import LogOut from '../auth/LogOut'
-import Invite from './Invites/Invite'
-import NotificationSettings from './Notifications/Notification'
 
 const AgencyHeader = () => {
 	const { agency } = useGetAgency()

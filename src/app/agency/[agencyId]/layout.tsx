@@ -10,7 +10,7 @@ import { Button, Typography } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 
-const layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
+const Layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
 	const { agencyId } = useParams<{ agencyId: string }>()
 	const [showNotification, setShowNotification] = useState(false)
 	const [showInvite, setShowInvite] = useState(false)
@@ -70,4 +70,4 @@ const layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
 	)
 }
 
-export default layout
+export default Layout

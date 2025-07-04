@@ -2,8 +2,7 @@
 
 import { auth } from '@/lib/firebase'
 import authService from '@/services/AuthService'
-import { Google } from '@mui/icons-material'
-import { IconButton } from '@mui/material'
+
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { useRouter } from 'next/navigation'
 
